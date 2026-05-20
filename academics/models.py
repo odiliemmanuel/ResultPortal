@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.core import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from account.models import Student
 from core.models import Department
 from core.constants import SEMESTER_CHOICES, LEVEL_CHOICES

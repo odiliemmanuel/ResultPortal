@@ -2,4 +2,4 @@ from random import random
 
 
 def generate_matric_number():
-    return random.randint(1, 9)
+    return "FSH" + str(random.randint(1, 999))
