@@ -37,7 +37,6 @@ class User(AbstractBaseUser):
 
 
 
-
 class Department(models.Model):
     name = models.CharField(max_length=200, unique=True)
     code = models.CharField(max_length=20, unique=True)

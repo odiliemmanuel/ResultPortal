@@ -53,13 +53,29 @@ class Course(models.Model):
 
 
 class CourseRegistration(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    register_at = models.DateTimeField(auto_now_add=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="registrations")
+    course = models.ForeignKey(Course, on_delete=models.PROTECT, related_name="registrations")
+    session = models.ForeignKey(AcademicSession, on_delete=models.PROTECT, related_name="registrations")
+    registered_at = models.DateTimeField(auto_now_add=True)
+
+
+    class Meta:
+        db_table = "academics_course_registrations"
+        unique_together = [("student", "course", "session"),]
+        ordering = ["-session_year", "course__code"]
 
 
     def __str__(self):
-        return self.course.title
+        return f"{self.student} - {self.course.code} ({self.session})"
+
+    def clean(self):
+        if self.course_id and self.session_id:
+            if self.course.semester != self.session.semester:
+                raise ValidationError(
+                    f"Course '{self.course.code}' belongs to the "
+                    f"{self.course.get_semester_display()} but this session "
+                    f"is the {self.session.get_semester_display()}"
+                )
 
 
 
