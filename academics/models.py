@@ -62,7 +62,7 @@ class CourseRegistration(models.Model):
     class Meta:
         db_table = "academics_course_registrations"
         unique_together = [("student", "course", "session"),]
-        ordering = ["session", "course__code"]
+        ordering = ["session__year", "course__code"]
 
 
     def __str__(self):
