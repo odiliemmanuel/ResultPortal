@@ -1,6 +1,6 @@
 from django.db import models
 from core.models import User, Department
-from util import generate_matric_number
+from account.util import generate_matric_number
 from core.constants import LEVEL_CHOICES, ROLE_STUDENT
 
 
