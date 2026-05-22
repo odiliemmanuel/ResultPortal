@@ -32,9 +32,7 @@ class User(AbstractBaseUser):
 
     @property
     def is_admin(self):
-        return self.role == Role.ADMIN
-
-
+        return self.role == "admin"
 
 
 class Department(models.Model):
