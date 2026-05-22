@@ -1,4 +1,4 @@
-from random import random
+import random
 
 
 def generate_matric_number():
