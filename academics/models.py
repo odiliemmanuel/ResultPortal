@@ -11,7 +11,7 @@ from core.constants import SEMESTER_CHOICES, LEVEL_CHOICES
 class AcademicSession(models.Model):
     name = models.CharField(max_length=20, help_text="e.g. 2024/2025")
     year = models.PositiveIntegerField(validators=[MinValueValidator(2000), MaxValueValidator(2100)])
-    semester = models.IntegerField(max_length=10, choices=SEMESTER_CHOICES, default="first")
+    semester = models.IntegerField(choices=SEMESTER_CHOICES, default="first")
     is_current = models.BooleanField(default=False)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)

@@ -23,7 +23,7 @@ class Student(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="student_profile", limit_choices_to={"role": ROLE_STUDENT},)
     department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name="student")
-    matric_number = models.IntegerField(max_length=20, unique=True, default=generate_matric_number)
+    matric_number = models.IntegerField( unique=True, default=generate_matric_number)
     level = models.CharField(max_length=3, choices=LEVEL_CHOICES)
     status = models.CharField(max_length=20, choices=STUDENT_STATUS_CHOICES, default="active")
     entry_year = models.PositiveIntegerField()
@@ -32,7 +32,7 @@ class Student(models.Model):
 
 
     class Meta:
-        db_table = "student account"
+        db_table = "student_account"
         ordering = ["matric_number"]
 
 
