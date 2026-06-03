@@ -1,9 +1,16 @@
-from core.views import create_department, update_department, get_department, delete_department
-from django.urls import path
+from django.urls import include, path
+from academics.views import CourseViewSet
+from .views import DepartmentViewSet
+from rest_framework_nested import routers
+
+
+router = routers.DefaultRouter()
+router.register('departments', DepartmentViewSet, basename='departments')
+dept_router = routers.NestedDefaultRouter(router, 'departments')
+dept_router.register('course', CourseViewSet, basename='course')
+
 
 urlpatterns = [
-    path('create/', create_department, name='create-department'),
-    path('get/<str:code>/', get_department, name='get-department'),
-    path('update/<str:code>/', update_department, name='update-department'),
-    path('delete/<str:code>/', delete_department, name='delete-department'),
+    path('', include(router.urls)),
+    path('', include(dept_router.urls)),
 ]
