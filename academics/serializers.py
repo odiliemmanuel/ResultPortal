@@ -1,11 +1,19 @@
+from django.contrib.sessions.models import Session
 from rest_framework import serializers
+from .models import Course, AcademicSession
 
 
-class CourseSerializer(serializers.Serializer):
-    department_id = serializers.IntegerField(required=True)
-    code = serializers.CharField(max_length=20,required=True)
-    title = serializers.CharField(max_length=200, required=True)
-    credit_units = serializers.IntegerField(required=True)
-    level = serializers.CharField(required=True)
-    semester = serializers.CharField(required=True)
-    description = serializers.CharField(required=False, allow_blank=True)
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['course_code', 'title', 'level', 'semester', 'description', 'credit_units']
+
+    def create(self, validated_data):
+        department_id = self.context.get('department_id')
+        return Course.objects.create(department_id=department_id, **validated_data)
+
+
+class AcademicsSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AcademicSession
+        fields = ['name', 'year', 'is_current', 'start_date', 'end_date']
