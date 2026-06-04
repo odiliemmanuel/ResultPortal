@@ -3,14 +3,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import StudentEnrollmentSerializer
 from .models import Student
-from core.models import User
+from core.models import User, Department
 from django.db import transaction
 
 
 class StudentEnrollment(APIView):
+
     def post(self, request, *args, **kwargs):
         serializer = StudentEnrollmentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
+        department_code = serializer.validated_data['department_code']
+        department = Department.objects.get(department_code=department_code)
 
         with transaction.atomic():
 
@@ -24,7 +28,7 @@ class StudentEnrollment(APIView):
 
             student = Student.objects.create(
                 user=user,
-                department=serializer.validated_data['department'],
+                department=department,
                 entry_year=serializer.validated_data['entry_year'],
             )
 
