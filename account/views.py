@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import StudentEnrollmentSerializer
-from .models import Student
+from .serializers import StudentEnrollmentSerializer, StaffEnrollmentSerializer
+from .models import Student, Staff
 from core.models import User, Department
 from django.db import transaction
 
@@ -13,7 +13,7 @@ class StudentEnrollment(APIView):
         serializer = StudentEnrollmentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        department_code = serializer.validated_data['department_code']
+        department_code = serializer.validated_data['department']
         department = Department.objects.get(department_code=department_code)
 
         with transaction.atomic():
@@ -36,6 +36,38 @@ class StudentEnrollment(APIView):
             student.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+
+class StaffEnrollment(APIView):
+
+    def post(self, request, *args, **kwargs):
+        serializer = StaffEnrollmentSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        department_code = serializer.validated_data['department']
+        department = Department.objects.get(department_code=department_code)
+
+        with transaction.atomic():
+            user = User.objects.create(
+                email=serializer.validated_data['email'],
+                username=serializer.validated_data['username'],
+                first_name=serializer.validated_data['first_name'],
+                last_name=serializer.validated_data['last_name'],
+                password=serializer.validated_data['password']
+            )
+
+            staff = Staff.objects.create(
+                user=user,
+                department=department,
+                designation=serializer.validated_data['designation'],
+            )
+
+            user.save()
+            staff.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 
         # "email": ,
