@@ -9,3 +9,13 @@ class StudentEnrollmentSerializer(serializers.Serializer):
     password = serializers.CharField(required=True, write_only=True)
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
+
+    # {
+    #     "department": "EE101",
+    #     "entry_year": 2026,
+    #     "email": "odiliejeh09@gmail.com",
+    #     "username": "Odils",
+    #     "password": "9087",
+    #     "first_name": " Kaodilichi",
+    #     "last_name": "Ejeh"
+    # }
