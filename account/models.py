@@ -12,13 +12,7 @@ class Student(models.Model):
         ("withdrawn", "Withdrawn"),
     ]
 
-    DESIGNATION_CHOICES = [
-        ("lecturer_i", "Lecturer I"),
-        ("lecturer_ii", "Lecturer II"),
-        ("sr_lecturer", "Senior Lecturer"),
-        ("professor", "Professor"),
-        ("hod", "Head of Department"),
-    ]
+
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="student_profile", limit_choices_to={"role": ROLE_STUDENT})
     department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name="student_department")
@@ -50,9 +44,17 @@ class Student(models.Model):
 
 
 class Staff(models.Model):
+    DESIGNATION_CHOICES = [
+        ("lecturer_i", "Lecturer I"),
+        ("lecturer_ii", "Lecturer II"),
+        ("sr_lecturer", "Senior Lecturer"),
+        ("professor", "Professor"),
+        ("hod", "Head of Department"),
+    ]
+
     user = models.OneToOneField(User, on_delete=models.PROTECT)
     department = models.ForeignKey(Department, on_delete=models.PROTECT)
-    designation = models.CharField(max_length=55, blank=False, null=False)
+    designation = models.CharField(max_length=55, choices=DESIGNATION_CHOICES, blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -61,3 +63,4 @@ class Staff(models.Model):
 
     class Meta:
         ordering = ['designation']
+
