@@ -66,7 +66,18 @@ from .serializers import DepartmentSerializer
 #     logger.info(f"department {department_code} deleted")
 #     return Response(status=status.HTTP_204_NO_CONTENT)
 
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from rest_framework.viewsets import ModelViewSet
+
+from .models import Department
+from .serializers import DepartmentSerializer
+
 
 class DepartmentViewSet(ModelViewSet):
     queryset = Department.objects.all()
     serializer_class = DepartmentSerializer
+
+    def get_permissions(self):
+        if self.request.method in ["POST", "PUT", "PATCH"]:
+            return [IsAdminUser()]
+        return [AllowAny()]
